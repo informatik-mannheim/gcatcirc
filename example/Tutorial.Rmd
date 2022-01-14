@@ -1,0 +1,28 @@
+---
+title: "GCAT Circular Codes Tutorial"
+author: Martin Starman, Markus Gumbel
+date: "`r format(Sys.time(), '%d. %B %Y')`"
+params:
+  devel: TRUE
+output:
+ html_document:
+  toc: true
+  number_sections: true 
+---
+
+_under construction_
+
+```{r include=params$devel, eval=params$devel}
+devtools::load_all(".")
+```
+
+```{r include=!params$devel, eval=!params$devel}
+library(gcatcirc)
+```
+
+# Let's go
+
+```{r}
+print(gcatcirc::hellogcatcirc())
+```
+

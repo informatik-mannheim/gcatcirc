@@ -1,0 +1,13 @@
+# See https://github.com/jimhester/lintr#available-linters
+linters: with_defaults(
+  # Here we configure the behavior:
+  line_length_linter(100),
+  commented_code_linter = NULL,
+  assignment_linter = NULL,
+  camel_case_linter = NULL
+  )
+exclusions: list("inst/doc/creating_linters.R" = 1, "inst/example/bad.R", "tests/testthat/exclusions-test")
+exclude: "# Exclude Linting"
+exclude_start: "# Begin Exclude Linting"
+exclude_end: "# End Exclude Linting"
+encoding: "UTF-8"
