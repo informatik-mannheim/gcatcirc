@@ -32,9 +32,17 @@ print(gcatcirc::hellogcatcirc())
 
 # C3 codes
 
+`all_c3_codes` gives all $C_3$ codes:
+
 ```{r}
-c3codes = all_c3_codes()
-X0 = c3codes[[23]]
+n = length(all_c3_codes())
+print(n)
+```
+
+There is also a function which allows a direct access to each $C_3$-code:
+
+```{r}
+X0 = c3_code(23)
 print(X0)
 summary(X0)
 ```
@@ -62,13 +70,13 @@ print(l)
 Here are the codons:
 
 ```{r}
-cl = lapply(l, function(i) c3codes[[i]])
+cl = lapply(l, function(i) c3_code(i))
 print(cl)
 ```
 
 How many different amino acids do these code cover?
 
 ```{r}
-al = sapply(l, function(i) length(unique(amino_acids(c3codes[[i]]))))
+al = sapply(l, function(i) length(unique(amino_acids(c3_code(i)))))
 print(al)
 ```
