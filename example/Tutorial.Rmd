@@ -40,7 +40,7 @@ summary(X0)
 ```
 
 ```{r}
-print(amino_acids(X0, 1))
+print(amino_acids(X0))
 ```
 
 Equivalence classes
@@ -69,6 +69,6 @@ print(cl)
 How many different amino acids do these code cover?
 
 ```{r}
-al = sapply(l, function(i) length(unique(amino_acids(c3codes[[i]]$tuples))))
+al = sapply(l, function(i) length(unique(amino_acids(c3codes[[i]]))))
 print(al)
 ```
