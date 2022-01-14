@@ -20,9 +20,55 @@ devtools::load_all(".")
 library(gcatcirc)
 ```
 
+```{r}
+library(gcatbase)
+```
+
 # Let's go
 
 ```{r}
 print(gcatcirc::hellogcatcirc())
 ```
 
+# C3 codes
+
+```{r}
+c3codes = all_c3_codes()
+X0 = c3codes[[23]]
+print(X0)
+summary(X0)
+```
+
+```{r}
+print(amino_acids(X0, 1))
+```
+
+Equivalence classes
+
+TODO: Maybe we better pass as argument the code itself not 23.
+
+Let us determine the equivalence class for $X_0$:
+```{r}
+ecl = c3_equiv_class(23)
+print(ecl)
+```
+
+Now we want to see all other $C_3$-codes of this class:
+```{r}
+l = c3_in_class(ecl)
+print(l)
+```
+
+Here are the codons:
+
+```{r}
+cl = lapply(l, function(i) c3codes[[i]])
+print(cl)
+```
+
+How many different amino acids do these code cover?
+
+```{r}
+al = sapply(l, function(i) length(unique(amino_acids(c3codes[[i]]$tuples))))
+print(al)
+```
