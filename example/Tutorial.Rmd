@@ -32,10 +32,10 @@ print(gcatcirc::hellogcatcirc())
 
 # C3 codes
 
-`all_c3_codes` gives all $C_3$ codes:
+`all_c3_codes` is list wiht all $C_3$ codes:
 
 ```{r}
-n = length(all_c3_codes())
+n = length(all_c3_codes)
 print(n)
 ```
 

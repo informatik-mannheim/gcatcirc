@@ -11,20 +11,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#' List of all 216 maximal self complementary circular C3 codes.
-#' @export
-all_c3_codes = function() {
-  gcatbase::read_codes("../data/C3-self-compl-circ-codes.txt",
-    tsize = 3, skip_codeid_col = FALSE
-  )
-}
-
 #' The i-th C3 code.
 #' 
 #' @param i 
 #' @return A C3 code
 #' @export
-c3_code = function(i) all_c3_codes()[[i]]
+c3_code = function(i) gcatcirc:::all_c3_codes[[i]]
 
 #' Table for mapping of code numbers to equivalence classes.
 #'

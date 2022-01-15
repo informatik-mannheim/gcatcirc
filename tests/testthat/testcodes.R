@@ -18,7 +18,6 @@ library(testthat)
 context("c3 codes") # Infos
 
 test_that("X0 Code", {
-  print(getwd())
   X0 = c3_code(23)
   expect_equal(X0$id, "X23")
 })
