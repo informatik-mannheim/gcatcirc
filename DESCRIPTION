@@ -1,5 +1,5 @@
 Package: gcatcirc
-Title: Genetic Code Analysis Toolkit for R - Circular code package
+Title: Genetic Code Analysis Toolkit for R - Circular rust_gcatcirc_lib.code package
 Version: 0.1.0
 Authors@R: 
     person(given = "Martin",
@@ -9,7 +9,7 @@ Authors@R:
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Author: Martin Starman [aut, cre], Markus Gumbel [aut]
 Maintainer: Markus Gumbel <m.gumbel@hs-mannheim.de>
-Depends: R (>= 3.6.0), seqinr, gcatbase (>= 0.2.2)
+Depends: R (>= 3.6.0), seqinr
 Suggests: testthat
 Description: What the package does (one paragraph).
 License: Apache License, Version 2.0
