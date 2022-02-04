@@ -1,15 +1,3 @@
-// Copyright 2021 by the authors.
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 use std::fmt;
 use crate::graph_code::CodeGraph;
 use crate::graph_circ::{CircGraph, CircGraphErr};
@@ -164,7 +152,7 @@ impl CircCode {
     pub fn get_code(&self) -> Vec<String> { return self.code.clone(); }
     ///  Returns a ordered list of all  of all tuple lengths.
     pub fn get_tuple_length(&self) -> Vec<usize> { return self.tuple_length.clone(); }
-    ///  Returns the alphabet used for all tuple in the code.
+    /// Returns the alphabet used for all tuple in the code.
     pub fn get_alphabet(&self) -> Vec<char> { return self.alphabet.clone(); }
 
     /// Checks whether the set wof words is a code or not
@@ -173,7 +161,7 @@ impl CircCode {
         return graph.is_code();
     }
 
-    /// Checks whether the set wof words is a code or not.
+    /// Checks whether the set of words is a code or not.
     ///
     /// If not it returns all ambiguous_sequences
     ///
@@ -304,7 +292,10 @@ impl CircCode {
 
 impl fmt::Display for CircCode {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} ({:?})) {{ {} }}", self.id, self.alphabet, self.code.join(", "))
+        write!(f, "{} -> {{ {} }} Alphabet = [{}]",
+               self.id,
+               self.code.join(", "),
+               self.alphabet.iter().map(|x| x.to_string()).collect::<Vec<String>>().join(", "))
     }
 }
 
