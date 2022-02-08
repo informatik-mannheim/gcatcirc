@@ -1,5 +1,6 @@
-use std::cell::RefCell;
-use std::rc::Rc;
+use std::borrow::BorrowMut;
+use std::sync::{Arc, Mutex};
+use std::thread;
 use crate::code;
 use code::CircCode;
 
@@ -117,9 +118,9 @@ impl CodeGraph {
     /// }
     /// ```
     pub fn all_ambiguous_sequences(&self) -> (bool, Vec<String>) {
-        let ambiguous_paths = Rc::new(RefCell::new(Vec::new()));
+        let ambiguous_paths =  Arc::new(Mutex::new(Vec::new()));
         let res = self.start_reg_is_code(true, Some(ambiguous_paths.clone()));
-        return (res, ambiguous_paths.borrow().clone());
+        return (res, (*ambiguous_paths.lock().unwrap()).clone());
     }
 
     /// Starts the recursive process to check whether a [CircCode](crate::code::CircCode) is a code
@@ -130,18 +131,42 @@ impl CodeGraph {
     /// # Arguments
     /// * `find_all_paths` a boolean value. If true it walks all possible path and stores all found ambiguous walks into all_paths.
     /// * `all_paths` A reference to an vector of paths. If not none the function stores all found ambiguous walks into the referenced vector.
-    fn start_reg_is_code(&self, find_all_paths: bool, all_paths: Option<Rc<RefCell<Vec<String>>>>) -> bool {
-        let mut is_code = true;
+    fn start_reg_is_code(&self, find_all_paths: bool, all_paths: Option<Arc<Mutex<Vec<String>>>>) -> bool {
+        let is_code = Arc::new(Mutex::new(true));
+
+        let all_paths = match all_paths {
+            Some(all_paths) =>  all_paths,
+            _ => Arc::new(Mutex::new(Vec::new())),
+        };
+
+        let mut handles = vec![];
+        let e = Arc::new(self.e.clone());
         for cod_idx_0 in 1..(self.e.len() - 1) {
             for cod_idx_1 in (cod_idx_0 + 1)..self.e.len() {
-                if !self.reg_is_code([(cod_idx_0, 0), (cod_idx_1, 0)], vec![], find_all_paths, all_paths.clone(), vec![]) {
-                    if !find_all_paths { return false; };
-                    is_code = false;
+                if !find_all_paths {
+                    if !Self::reg_is_code(e.clone() ,[(cod_idx_0, 0), (cod_idx_1, 0)], vec![], find_all_paths, all_paths.clone(), vec![]) {
+                        return false;
+                    }
+                } else {
+                    let e = e.clone();
+                    let all_paths = all_paths.clone();
+                    let is_code = is_code.clone();
+                    handles.push(thread::spawn(move || {
+                        if !Self::reg_is_code(e, [(cod_idx_0, 0), (cod_idx_1, 0)], vec![], find_all_paths, all_paths, vec![]) {
+                            let mut is_code = is_code.lock().unwrap();
+                            *is_code = false;
+                        };
+                    }));
                 }
             }
         }
+        if find_all_paths {
+            for h in handles {
+                h.join().unwrap();
+            }
+        }
 
-        return is_code;
+        return *is_code.lock().unwrap();
     }
 
     /// The recursive process to check whether a [CircCode](crate::code::CircCode) is a code
@@ -155,11 +180,8 @@ impl CodeGraph {
     /// * `find_all_paths` a boolean value. If true it walks all possible path and stores all found cyclic pathways into `all_paths`.
     /// * `all_paths` A reference to an vector of paths. If not none the function stores all found cyclic pathways into the referenced vector.
     /// * `current_path` the concatenated labels of the walk.
-    fn reg_is_code(&self, mut pos: [(usize, usize); 2], mut history: Vec<[(usize, usize); 2]>, find_all_paths: bool, all_paths: Option<Rc<RefCell<Vec<String>>>>, mut current_path: Vec<char>) -> bool {
-        let all_paths = match all_paths {
-            Some(all_paths) => all_paths,
-            _ => Rc::new(RefCell::new(Vec::new())),
-        };
+    fn reg_is_code(e: Arc<Vec<Vec<char>>>, mut pos: [(usize, usize); 2], mut history: Vec<[(usize, usize); 2]>, find_all_paths: bool, all_paths: Arc<Mutex<Vec<String>>>, mut current_path: Vec<char>) -> bool {
+
         let [mut p0, mut p1] = pos;
         pos.sort();
         if history.contains(&pos) {
@@ -168,9 +190,9 @@ impl CodeGraph {
         history.push(pos);
         for (p0, p1) in [(p0, p1), (p1, p0)] {
             let mut is_code = true;
-            if p0 == (0, 0) || self.e[p0.0].len() - 1 == p0.1 {
-                for cod_idx in 1..self.e.len() {
-                    if !self.reg_is_code([(cod_idx, 0), p1], history.clone(), find_all_paths, Some(all_paths.clone()), current_path.clone()) {
+            if p0 == (0, 0) || e[p0.0].len() - 1 == p0.1 {
+                for cod_idx in 1..e.len() {
+                    if !Self::reg_is_code(e.clone(), [(cod_idx, 0), p1], history.clone(), find_all_paths, all_paths.clone(), current_path.clone()) {
                         if !find_all_paths { return false; };
                         is_code = false;
                     }
@@ -184,16 +206,16 @@ impl CodeGraph {
         p0.1 = p0.1 + 1;
         p1.1 = p1.1 + 1;
 
-        if self.e[p0.0][p0.1] == self.e[p1.0][p1.1] {
-            current_path.push(self.e[p0.0][p0.1]);
-            if self.e[p0.0].len() - 1 == p0.1 && self.e[p1.0].len() - 1 == p1.1 {
+        if e[p0.0][p0.1] == e[p1.0][p1.1] {
+            current_path.push(e[p0.0][p0.1]);
+            if e[p0.0].len() - 1 == p0.1 && e[p1.0].len() - 1 == p1.1 {
                 if find_all_paths {
                     let word: String = current_path.iter().map(|x| x.to_string()).collect();
-                    all_paths.borrow_mut().push(word);
+                    all_paths.lock().unwrap().borrow_mut().push(word);
                 }
                 return false;
             }
-            return self.reg_is_code([p0, p1], history.clone(), find_all_paths, Some(all_paths.clone()), current_path);
+            return Self::reg_is_code(e.clone(), [p0, p1], history.clone(), find_all_paths, all_paths.clone(), current_path);
         }
         return true;
     }

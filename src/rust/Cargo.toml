@@ -10,5 +10,5 @@ crate-type = ['staticlib']
 
 [dependencies]
 extendr-api = '*'
-rust_gcatcirc_lib = { path = "../rust_gcatcirc_lib" }
+rust_gcatcirc_lib = { path = "./rust_gcatcirc_lib" }
 
