@@ -16,7 +16,7 @@
 #' @param i 
 #' @return A C3 code
 #' @export
-c3_code = function(i) gcatcirc:::all_c3_codes[[i]]
+c3_code = function(i) all_c3_codes[[i]]
 
 #' Table for mapping of code numbers to equivalence classes.
 #'
