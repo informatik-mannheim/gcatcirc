@@ -1,5 +1,5 @@
 # gcatcirc
-Genetic Code Analysis Toolkit for R - Circular code package (gcatcirc)
+Genetic Code Analysis Toolkit for R - Circular rust_gcatcirc_lib.code package (gcatcirc)
 
 _under construction_
 
