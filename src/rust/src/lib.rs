@@ -2,8 +2,6 @@ use extendr_api::prelude::*;
 
 extern crate rust_gcatcirc_lib;
 
-use rust_gcatcirc_lib::code;
-
 mod lib_utils;
 use lib_utils::new_code_from_vec;
 

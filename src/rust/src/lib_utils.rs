@@ -11,7 +11,8 @@ pub(crate) fn new_code_from_vec(code: Vec<String>) -> code::CircCode {
     match code::CircCode::new_from_vec(code) {
         Ok(code) => return code,
         Err(e) => {
-            rprintln!("Code is not Correct: {}", e);
+            rprintln!("Code is not correct: {}", e);
+            R!(stop("Code is not correct")).unwrap();
             return code::CircCode::default()
         },
     }
