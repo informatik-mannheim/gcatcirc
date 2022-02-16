@@ -16,7 +16,7 @@
 #' @param i 
 #' @return A C3 code
 #' @export
-c3_code = function(i) all_c3_codes[[i]]
+c3_code = function(i) gcatbase::code(all_c3_codes[[i]], id=paste0("maximum self-complementary C³ #, ", i))
 
 #' Table for mapping of code numbers to equivalence classes.
 #'

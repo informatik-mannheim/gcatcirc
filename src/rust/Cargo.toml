@@ -9,6 +9,6 @@ edition = "2021"
 crate-type = ['staticlib']
 
 [dependencies]
-extendr-api = '*'
+extendr-api = '0.2'
 rust_gcatcirc_lib = { git = "https://github.com/informatik-mannheim/rust_gcatcirc_lib.git" }
 
