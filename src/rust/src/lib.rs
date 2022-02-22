@@ -220,7 +220,7 @@ fn is_code_strong_comma_free(tuples: Vec<String>) -> bool {
 /// @return Boolean value. True if the code is circular.
 /// @examples
 /// code <- gcatbase::code(c("ACG", "CGG", "AC"))
-/// is_code_circular(code)
+/// circular_shift(code, 2)
 ///
 /// @export
 #[extendr]

@@ -20,6 +20,6 @@ let \emph{X}={123, 332}, then c.shift(2) results in {312, 233}
 }
 \examples{
 code <- gcatbase::code(c("ACG", "CGG", "AC"))
-is_code_circular(code)
+circular_shift(code, 2)
 
 }

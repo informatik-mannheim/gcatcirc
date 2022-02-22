@@ -7,7 +7,7 @@
 c3_equiv_class(cid)
 }
 \arguments{
-\item{cid}{C3 code number.}
+\item{cid}{Integer 0 < i < 217. The number of the C3 code.}
 }
 \value{
 Its equivalence class.

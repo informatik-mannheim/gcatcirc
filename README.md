@@ -12,8 +12,15 @@ See `./example/Tutorial.Rmd` for an introduction.
 ## Installation
 
 # Installation
-gcatcirc is available for R version 3.6 and higher. It requires a rust 1.57 (or later) compiler installed on your machine.
-Furthermore the current version of devtools has to be installed on your computer. If you are using Microsoft Windows, then you need to install [Rtools](https://cran.r-project.org/bin/windows/Rtools/)
+gcatcirc is available for R version 3.6 and higher. It requires a [rust](https://www.rust-lang.org/) 1.57 (or later) compiler installed on your machine.
+Furthermore the current version of devtools has to be installed on your computer. If you are using Microsoft Windows, 
+then you need to install [Rtools](https://cran.r-project.org/bin/windows/Rtools/)
+
+A common error is that rust does not have the target installed.
+
+```CMD
+rustup target add [YOUR_TARGET]
+```
 
 Starting a new R console and run:
 ```R
@@ -158,7 +165,7 @@ let *X*={123, 332}, then c.shift(2) results in {312, 233}
 #### Examples
 ```R 
 code <- gcatbase::code(c("ACG", "CGG", "AC"))
-is_code_circular(code)
+circular_shift(code, 2)
 
 ```
 <hr>
@@ -376,7 +383,7 @@ c3_code(i)
 
 #### Arguments
  
-*i*	<br>{}
+*i*	Integer 0 < i < 217. The number of the C3 code<br>
 
 
 #### Return
@@ -402,7 +409,7 @@ c3_equiv_class(cid)
 
 #### Arguments
  
-*cid*	C3 code number.<br>
+*cid*	Integer 0 < i < 217. The number of the C3 code.<br>
 
 
 #### Return
