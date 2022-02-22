@@ -51,8 +51,6 @@ Tutorial.html
 .Rbuildignore
 extendr-wrappers.R
 settings.json
-NAMESPACE
-man
 docs
 src-i386
 src-x64
