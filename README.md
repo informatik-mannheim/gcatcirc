@@ -1,5 +1,5 @@
 # gcatcirc
-## Genetic Code Analysis Toolkit for R - CGAT Circular package (gcatcirc)
+## Genetic Code Analysis Toolkit for R - GCAT Circular package (gcatcirc)
 
 ### _under construction_
 Version 0.1 is only a beta and not ready for use.

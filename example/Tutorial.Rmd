@@ -27,7 +27,7 @@ library(gcatcirc)
 # Let's go
 
 ```{r}
-print(gcatcirc::hellogcatcirc())
+# print(gcatcirc::hellogcatcirc())
 ```
 
 # C3 codes
