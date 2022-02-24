@@ -13,7 +13,7 @@ See `./example/Tutorial.Rmd` for an introduction.
 ## Installation
 
 # Installation
-gcatcirc is available for R version 3.6 and higher. It requires a [rust](https://www.rust-lang.org/) 1.57 (or later) compiler installed on your machine.
+gcatcirc is available for R version 4.1 and higher. It requires a [rust](https://www.rust-lang.org/) 1.57 (or later) compiler installed on your machine.
 Furthermore the current version of devtools has to be installed on your computer. If you are using Microsoft Windows, 
 then you need to install [Rtools](https://cran.r-project.org/bin/windows/Rtools/)
 
