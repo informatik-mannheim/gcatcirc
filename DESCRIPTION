@@ -9,7 +9,8 @@ Authors@R:
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Author: Martin Starman [aut, cre], Markus Gumbel [aut]
 Maintainer: Markus Gumbel <m.gumbel@hs-mannheim.de>
-Depends: R (>= 3.6.0), seqinr
+Depends: R (>= 4.1.0), igraph (>= 1.2), rextendr (>= 0.2)
+Imports: igraph (>= 1.2), rextendr (>= 0.2)
 Suggests: testthat
 Description: What the package does (one paragraph).
 License: Apache License, Version 2.0

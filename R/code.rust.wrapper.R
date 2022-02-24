@@ -1,40 +1,159 @@
-#' Returns a new CircCode object.
-#'
-#' This function creates a [CircCode] object. The 'code.or.seq' parameter
-#' can either be a sequence or set of words. Please note that if code.or.seq is a set of words the
-#' 'tuple.length' parameter will be ignored. Likewise, the 'code.or.seq' parameter can also be a
-#' comma- or space-separated string.
-#'
-#' @seealso [CircCode]
-#'
-#' @param code.or.seq a string vector or a sequence.
-#' @param tuple.length if the used as tuple length if code.or.seq is a sequence.
-#' @param id (optional) [string] the id/name  of the code
-#'
-#' @return  [CircCode] object.
-#'
-#' @examples
-#' code <- new.circ.code(c("110", "10", "100"), id = "#1")
-#' code <- new.circ.code("110100", 3, id = "#2")
-#' code <- new.circ.code("110 100, 10")
-#'
-#' @export
-new.circ.code <- function(code.or.seq, tuple.length = NULL, id = NULL) {
-  code <- (function () {
-    if (length(code.or.seq) == 1) {
-      if (!is.null(tuple.length)) {
-        return(CircCode$new_from_seq(code.or.seq, tuple.length))
-      }
+igraph_factory <- function(vertices_edges_list) {
+  g <- igraph::make_empty_graph();
+  vertices_vec <- vertices_edges_list$vertices
+  edges_vec <- vertices_edges_list$edges
+  if (length(vertices_vec) > 0) {
+    g <- g + igraph::vertex(vertices_vec, color = "white")
 
-      code.or.seq <- unlist(stringr::str_split(code.or.seq, "[, ]+"))
+    g <- g + igraph::edges(edges_vec, color = "black")
+    if (!is.null(vertices_edges_list$circular_path_edges)) {
+      g <- g + igraph::edges(vertices_edges_list$circular_path_edges, color = "red")
+    }
+    if (!is.null(vertices_edges_list$longest_path_edges)) {
+      g <- g + igraph::edges(vertices_edges_list$longest_path_edges, color = "green")
     }
 
-    return(CircCode$new_from_vec(code.or.seq))
-  })();
-
-  if (!is.null(id)) {
-    code$set_id(id);
+    return(g)
   }
+}
 
-  return(code);
+
+#' Prepares a R igraph object of a graph associated to a code.
+#'
+#' This function factors a igraph (<http://igraph.org/r/>) object of an representing graph of a circular code.
+#' The following definition describes a directed graph to an  code.
+#' Recall from graph theory (Clark and Holton, 1991) that a graph G consists of
+#' a finite set of vertices (nodes) V and a finite set of edges E. Here, an edge is a set \{v,w\} of vertices
+#' from V . The graph is called oriented if the edges have an orientation, i.e. edges are considered to be
+#' ordered pairs [v,w] in this case.\cr
+#' Definition Let X be a code. We define a directed graph G(X) =
+#' (V (X),E(X)) with set of vertices V (X) and set of edges E(X) as follows:
+#' V (X) = \{N1...Ni,Ni+1...Nn : N1N2N3...Nn in X, 0 < i < n\}\cr
+#' E(X) = \{[N1...Ni,Ni+1...Nn] : N1N2N3...Nn in X, 0 < i < n\}\cr
+#' The graph G(X) is called the representing graph of X or the graph associated to X.\cr
+#' Basically, the graph G(X) associated to a code X interprets n-tuples from X in (n−1) ways
+#' by pairs of i-tuples and (n-i)-tuples for 0 < i < n.\cr
+#' \emph{2007 E. FIMMEL, C. J. MICHEL, AND L. STRÜNGMANN. N-nucleotide circular codes in graph theory}
+#'
+#' @param code is A gcatbase::gcat.code object.
+#' @param show_cycles A bool value. If true the all edges which are part of a cycle are colored red.
+#' @param show_longest_path A bool value. If true the all edges part of the longest path are colored blue.
+#'
+#' @return A igraph (<http://igraph.org/r/>) object: A graph representing a circular code.
+#'
+#' @examples
+#' code <- gcatbase::code(c("ACG", "CGG", "AC"))
+#' G <- get_representing_graph(code, TRUE, TRUE)
+#' igraph::tkplot(G)
+#'
+#' @export
+get_representing_graph <- function(code, show_cycles = F, show_longest_path = F) {
+  g.obj <- get_representing_graph_obj(code, show_cycles = show_cycles, show_longest_path = show_longest_path)
+  return(igraph_factory(g.obj))
+}
+
+
+#' plots a R igraph object of a graph associated to a code.
+#'
+#' This function factors a igraph (<http://igraph.org/r/>) object of an representing graph of a circular code.
+#' The following definition describes a directed graph to an  code.
+#' Recall from graph theory (Clark and Holton, 1991) that a graph G consists of
+#' a finite set of vertices (nodes) V and a finite set of edges E. Here, an edge is a set \{v,w\} of vertices
+#' from V . The graph is called oriented if the edges have an orientation, i.e. edges are considered to be
+#' ordered pairs [v,w] in this case.\cr
+#' Definition Let X be a code. We define a directed graph G(X) =
+#' (V (X),E(X)) with set of vertices V (X) and set of edges E(X) as follows:
+#' V (X) = \{N1...Ni,Ni+1...Nn : N1N2N3...Nn in X, 0 < i < n\}\cr
+#' E(X) = \{[N1...Ni,Ni+1...Nn] : N1N2N3...Nn in X, 0 < i < n\}\cr
+#' The graph G(X) is called the representing graph of X or the graph associated to X.\cr
+#' Basically, the graph G(X) associated to a code X interprets n-tuples from X in (n−1) ways
+#' by pairs of i-tuples and (n-i)-tuples for 0 < i < n.\cr
+#' \emph{2007 E. FIMMEL, C. J. MICHEL, AND L. STRÜNGMANN. N-nucleotide circular codes in graph theory}
+#'
+#' @param code is A gcatbase::gcat.code object.
+#' @param show_cycles A bool value. If true the all edges which are part of a cycle are colored red.
+#' @param show_longest_path A bool value. If true the all edges part of the longest path are colored blue.
+#'
+#' @return returns an integer, the id of the plot, this can be used to manipulate it from the command line. tk_canvas returns tkwin object, the Tk canvas..
+#'
+#' @examples
+#' code <- gcatbase::code(c("ACG", "CGG", "AC"))
+#' h <- plot_representing_graph(code, TRUE, TRUE)
+#'
+#' @export
+plot_representing_graph <- function(code, show_cycles = F, show_longest_path = F) {
+  g.obj <- get_representing_graph_obj(code, show_cycles = show_cycles, show_longest_path = show_longest_path)
+  G <- igraph_factory(g.obj)
+  igraph::tkplot(G)
+}
+
+
+#' Prepares a R igraph object of a i-component of a graph associated to a code.
+#'
+#' This function factors a igraph (<http://igraph.org/r/>) object of an representing graph of a circular code.
+#' The following definition describes a directed graph to an code.
+#' Recall from graph theory (Clark and Holton, 1991) that a graph G consists of
+#' a finite set of vertices (nodes) V and a finite set of edges E. Here, an edge is a set \{v,w\} of vertices
+#' from V . The graph is called oriented if the edges have an orientation, i.e. edges are considered to be
+#' ordered pairs [v,w] in this case.\cr
+#' Definition Let X be a code and i be a positive integer, the component index.
+#' We define a directed graph G(X) =
+#' (V (X),E(X)) with set of vertices V (X) and set of edges E(X) as follows:
+#' V (X) = \{N1...Ni,Ni+1...Nn : N1N2N3...Nn in X\} for a given i \cr
+#' E(X) = \{[N1...Ni,Ni+1...Nn] : N1N2N3...Nn in X\} for a given i\cr
+#' The graph G(X) is called the i-component of the representing graph of X or the graph associated to X.\cr
+#' \emph{2007 E. FIMMEL, C. J. MICHEL, AND L. STRÜNGMANN. N-nucleotide circular codes in graph theory}
+#'
+#' @param code is A gcatbase::gcat.code object.
+#' @param i the component index.
+#' @param show_cycles A bool value. If true the all edges which are part of a cycle are colored red.
+#' @param show_longest_path A bool value. If true the all edges part of the longest path are colored blue.
+#'
+#' @return A igraph (<http://igraph.org/r/>) object: A graph representing a circular code.
+#'
+#' @examples
+#' code <- gcatbase::code(c("ACG", "CGG", "AC"))
+#' G <- get_component_of_representing_graph(code, i, TRUE, TRUE)
+#' igraph::tkplot(G)
+#'
+#' @export
+get_component_of_representing_graph <- function(code, i, show_cycles = F, show_longest_path = F) {
+  g.obj <- get_representing_component_obj(code, i, show_cycles = show_cycles, show_longest_path = show_longest_path)
+  return(igraph_factory(g.obj))
+}
+
+
+#' Plots a R igraph object of a i-component of a graph associated to a code.
+#'
+#' This function plots a igraph (<http://igraph.org/r/>) object of an representing graph of a circular code.
+#' The following definition describes a directed graph to an code.
+#' Recall from graph theory (Clark and Holton, 1991) that a graph G consists of
+#' a finite set of vertices (nodes) V and a finite set of edges E. Here, an edge is a set \{v,w\} of vertices
+#' from V . The graph is called oriented if the edges have an orientation, i.e. edges are considered to be
+#' ordered pairs [v,w] in this case.\cr
+#' Definition Let X be a code and i be a positive integer, the component index.
+#' We define a directed graph G(X) =
+#' (V (X),E(X)) with set of vertices V (X) and set of edges E(X) as follows:
+#' V (X) = \{N1...Ni,Ni+1...Nn : N1N2N3...Nn in X\} for a given i \cr
+#' E(X) = \{[N1...Ni,Ni+1...Nn] : N1N2N3...Nn in X\} for a given i\cr
+#' The graph G(X) is called the i-component of the representing graph of X or the graph associated to X.\cr
+#' \emph{2007 E. FIMMEL, C. J. MICHEL, AND L. STRÜNGMANN. N-nucleotide circular codes in graph theory}
+#'
+#' @param code is A gcatbase::gcat.code object.
+#' @param i the component index.
+#' @param show_cycles A bool value. If true the all edges which are part of a cycle are colored red.
+#' @param show_longest_path A bool value. If true the all edges part of the longest path are colored blue.
+#'
+#' @return returns an integer, the id of the plot, this can be used to manipulate it from the command line. tk_canvas returns tkwin object, the Tk canvas.
+#'
+#' @examples
+#' code <- gcatbase::code(c("ACGG", "CGGC", "AC"))
+#' h <- plot_component_of_representing_graph(code, 2, TRUE, TRUE)
+
+#'
+#' @export
+plot_component_of_representing_graph <- function(code, i, show_cycles = F, show_longest_path = F) {
+  g.obj <- get_representing_component_obj(code, i, show_cycles = show_cycles, show_longest_path = show_longest_path)
+  G <- igraph_factory(g.obj)
+  igraph::tkplot(G)
 }

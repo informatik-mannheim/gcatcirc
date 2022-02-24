@@ -1,116 +1,234 @@
-// Copyright 2021 by the authors.
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 use extendr_api::prelude::*;
 
 extern crate rust_gcatcirc_lib;
-use rust_gcatcirc_lib::code;
 
+mod lib_utils;
+use lib_utils::new_code_from_vec;
 
-struct CircCode(code::CircCode);
-
-/// This struct wraps a set of tuple/words into a circular code.
+mod graph;
+use graph::*;
+/// Checks whether the set of words is a code or not
+///
+/// This function returns true if a set of words is by
+/// definition a code. A code \emph{X} is a set of words so that
+/// any sequence has at most one decomposition in words of \emph{X}
+///
+/// @param tuples A gcatbase::gcat.code object
+///
+/// @return A Boolean. If true the code is a code
+///
+/// @examples
+/// code <- gcatbase::code(c("ACG", "CGG", "AC"))
+/// is_code(code)
+///
+/// @export
 #[extendr]
-impl CircCode {
-
-    /// Returns a new [CircCode]
-    ///
-    /// Establishes all used tuple lengths and stores them into `tuple_length`. It also collects the `alphabet`.
-    ///
-    /// # Arguments
-    /// * `code` a set of words
-    fn new_from_vec(code: Vec<String>) -> Self {
-        match code::CircCode::new_from_vec(code) {
-            Ok(code) => return Self(code),
-            Err(_e) => return Self(code::CircCode::default()),
-        }
-    }
-
-    /// Returns a new [CircCode]
-    ///
-    /// Establishes all used tuple lengths and stores them into `tuple_length`. It also collects the `alphabet`.
-    ///
-    /// # Arguments
-    /// * `sequence` a sequence
-    /// * `tuple_length` the tuple length used to separate the sequence
-    fn new_from_seq(code: String, tuple_length: u32) -> Self {
-        match code::CircCode::new_from_seq(code, tuple_length as usize) {
-            Ok(code) => return Self(code),
-            Err(_e) => return Self(code::CircCode::default()),
-        }
-    }
-    /// Returns a set of tuples/words.
-    fn get_code(&self) -> Vec<String> {
-        let CircCode(this) = self;
-        return this.get_code();
-    }
-    /// Returns a ordered list of all  of all tuple lengths.
-    fn get_tuple_length(&self)  -> Vec<usize>{
-        let CircCode(this) = self;
-        return this.get_tuple_length();
-    }
-
-    /// Sets (replaces old id) the id of the code.
-    fn set_id(&mut self, id: String) {
-        let CircCode(this) = self;
-        this.id = id;
-    }
-
-    /// Returns the id of the code.
-    fn get_id(&self) -> String {
-        let CircCode(this) = self;
-        return this.id.clone();
-    }
-
-    /// Returns the alphabet used for all tuple in the code.
-    fn get_alphabet(&self) -> Vec<String> {
-        let CircCode(this) = self;
-        return this.get_alphabet().iter().map(|x| x.to_string()).collect();
-    }
-
-    /// Checks whether the set wof words is a code or not
-    pub fn is_code(&self) -> bool {
-        let CircCode(this) = self;
-        return this.is_code();
-    }
-
-    /// Checks whether the set of words is a code or not.
-    ///
-    /// If not it returns all ambiguous_sequences
-    fn all_ambiguous_sequences(&self) -> Vec<String> {
-        let CircCode(this) = self;
-        return this.all_ambiguous_sequences().1
-    }
-
-    /// Shifts each tuple by `sh` positions
-    ///
-    /// Let X={123, 332}, then c.shift(2) results in {312, 233}
-    fn shift(&mut self, sh: i32) {
-        let CircCode(this) = self;
-        this.shift(sh);
-    }
-
-    // Returns a printable string
-    ///
-    /// The string is in form of "[Id](CircCode::get_id()) -> [Code](CircCode::get_code()) Alphabet = [Alphabet](CircCode::get_alphabet())"
-    fn to_string(&self) -> String {
-        let CircCode(this) = self;
-        return this.to_string();
-    }
-
-
+pub fn is_code(tuples: Vec<String>) -> bool {
+    let code = new_code_from_vec(tuples);
+    return code.is_code();
 }
 
+/// If a set of words is not a code it returns all ambiguous sequences.
+///
+/// This function returns all ambiguous sequences
+/// which only exist if a set of words \emph{X} is by
+/// definition not a code. Such a sequence can be decomposed in
+/// at least two disjoint sets of words of \emph{X}.
+///
+/// @param tuples A gcatbase::gcat.code object
+///
+/// @return A String vector with all ambiguous sequences.
+///
+/// @seealso \link{is_code}
+///
+/// @examples
+/// code <- gcatbase::code(c("ACG", "CGG", "AC"))
+/// all_ambiguous_sequences(code)
+///
+/// @export
+#[extendr]
+fn all_ambiguous_sequences(tuples: Vec<String>) -> Vec<String> {
+    let code = new_code_from_vec(tuples);
+    return code.all_ambiguous_sequences().1;
+}
+
+/// Check if a code is circular.
+///
+/// This function checks if a code is circular. Circular codes are sets of
+/// tuples \emph{X} of different tuple length where
+/// every concatenation of words \emph{w} in \emph{X} written on a circle
+/// has only a single decomposition into words from \emph{X}.\cr
+/// For more info on this subject read:\cr
+/// \link{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5492142/},\cr
+/// \link{http://dpt-info.u-strasbg.fr/~c.michel/Circular_Codes.pdf},\cr
+/// \emph{2007 Christian MICHEL. CIRCULAR CODES IN GENES}
+///
+/// @param tuples A gcatbase::gcat.code object
+///
+/// @return Boolean value. True if the code is circular.
+///
+/// @examples
+/// code <- gcatbase::code(c("ACG", "CGG", "AC"))
+/// is_code_circular(code)
+///
+/// @export
+#[extendr]
+fn is_code_circular(tuples: Vec<String>) -> bool {
+    let code = new_code_from_vec(tuples);
+    return code.is_circular();
+}
+
+/// This function checks if a code is circular.
+///
+/// K circle codes are a less restrictive code from the family of circle codes. These codes only ensure that for every
+/// concatenation of less than k tuples from \emph{X} written on a circle, there is only one partition in tuples from \emph{X}.\cr
+/// For mor details see: \link{https://link.springer.com/article/10.1007/s11538-020-00770-7}
+///
+/// @param tuples A gcatbase::gcat.code object
+///
+/// @return Integer value, the exact k value of the k-circularity.
+///
+/// @examples
+/// code <- gcatbase::code(c("ACG", "CGG", "AC"))
+/// k <- get_exact_k_circular(code)
+///
+/// @seealso \link{is_code_circular}
+///
+/// @export
+// [[Rcpp::export]]
+#[extendr]
+fn get_exact_k_circular(tuples: Vec<String>) -> u32 {
+    let code = new_code_from_vec(tuples);
+    return code.get_exact_k_circular();
+}
+
+/// This function checks if a code is K-Graph circular.
+///
+/// K-Graph circle codes are a less restrictive code from the family of circle codes. These codes only ensure that for every
+/// concatenation of less than k tuples from \emph{X} written on a circle, there is only one partition in tuples from \emph{X}.\cr
+/// For mor details see: \link{https://link.springer.com/article/10.1007/s11538-020-00770-7}
+///
+/// @param tuples A gcatbase::gcat.code object
+///
+/// @return Integer value, the exact k value of the k-circularity.
+///
+/// @examples
+/// code <- gcatbase::code(c("ACG", "CGG", "AC"))
+/// k <- get_exact_k_graph_circular(code)
+///
+/// @seealso \link{is_code_circular}
+///
+/// @export
+// [[Rcpp::export]]
+#[extendr]
+fn get_exact_k_graph_circular(tuples: Vec<String>) -> u32 {
+    let code = new_code_from_vec(tuples);
+    return code.get_exact_k_circular();
+}
+
+/// This function checks if a code is Cn-circular.
+///
+/// That all circular permutations of the code (of all tuples) are circular codes again.
+/// In total, this function checks all 'n' circular permutations where 'n' is the greatest
+/// common multiple of all tuple lengths used.
+/// This is an extended property of circular codes.
+///
+/// @param tuples A gcatbase::gcat.code object
+///
+/// @return Boolean value. True if the code is Cn circular.
+///
+/// @examples
+/// code <- gcatbase::code(c("ACG", "CGG", "AC"))
+/// k <- is_code_cn_circular(code)
+///
+/// @seealso \link{is_code_circular}
+///
+/// @export
+#[extendr]
+fn is_code_cn_circular(tuples: Vec<String>) -> bool {
+    let code = new_code_from_vec(tuples);
+    return code.is_cn_circular();
+}
+
+/// Check if a code is comma free.
+///
+/// This function checks if a code is comma free.
+/// Comma free codes are a more restrictive codes from the circular code family.
+/// A comma free code \emph{X} is a code in which no concatenation of a
+/// nonempty suffix of any word from \emph{X} and a nonempty prefix of any word from \emph{X} forms a word from \emph{X}.\cr
+/// This is an extended property of the circular codes. See \link{is_code_circular} for more details.\cr
+/// For more info on this subject read:\cr
+/// \link{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5492142/},\cr
+/// \link{http://dpt-info.u-strasbg.fr/~c.michel/Circular_Codes.pdf},\cr
+/// \emph{2007 Christian MICHEL. CIRCULAR CODES IN GENES}
+///
+/// @param tuples A gcatbase::gcat.code object
+///
+/// @return Boolean value. True if the code is comma free.
+///
+/// @examples
+/// code <- gcatbase::code(c("ACG", "CGG", "AC"))
+/// is_code_comma_free(code)
+///
+/// @seealso \link{is_code_circular}
+///
+/// @export
+#[extendr]
+fn is_code_comma_free(tuples: Vec<String>) -> bool {
+    let code = new_code_from_vec(tuples);
+    return code.is_comma_free();
+}
+
+/// Check if a code is strong comma free.
+///
+/// This function checks if a code is strong comma free.
+/// Strong comma free codes are a more restrictive codes from the circular code family.
+/// A strong comma free code \emph{X} is a code in which no nonempty suffix of any word from \emph{X}
+/// is a nonempty prefix of any word from \emph{X}.\cr
+/// This is an extended property of the circular codes. See \link{is_code_comma_free} for more details.\cr
+/// For more info on this subject read:\cr
+/// \link{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5492142/},\cr
+/// \link{http://dpt-info.u-strasbg.fr/~c.michel/Circular_Codes.pdf},\cr
+/// \emph{2007 Christian MICHEL. CIRCULAR CODES IN GENES}
+///
+/// @param tuples A gcatbase::gcat.code object
+///
+/// @return Boolean value. True if the code is strong comma free.
+///
+/// @examples
+/// code <- gcatbase::code(c("ACG", "CGG", "AC"))
+/// is_code_strong_comma_free(code)
+///
+/// @seealso \link{is_code_circular}, \link{is_code_comma_free}
+///
+/// @export
+#[extendr]
+fn is_code_strong_comma_free(tuples: Vec<String>) -> bool {
+    let code = new_code_from_vec(tuples);
+    return code.is_strong_comma_free();
+}
+
+
+/// Shifts each tuple by `sh` positions
+///
+/// Under the concept shift is understood a circular permutation, i.e.
+/// let \emph{X}={123, 332}, then c.shift(2) results in {312, 233}
+///
+/// @param tuples A gcatbase::gcat.code object
+/// @param sh A integer, the shift index, i.e. the number of shifts.
+///
+/// @return Boolean value. True if the code is circular.
+/// @examples
+/// code <- gcatbase::code(c("ACG", "CGG", "AC"))
+/// circular_shift(code, 2)
+///
+/// @export
+#[extendr]
+fn circular_shift(tuples: Vec<String>, sh: i32) -> Vec<String> {
+    let mut code = new_code_from_vec(tuples);
+    code.shift(sh);
+    return code.get_code()
+}
 
 
 
@@ -119,5 +237,14 @@ impl CircCode {
 // See corresponding C rust_gcatcirc_lib.code in `entrypoint.c`.
 extendr_module! {
     mod gcatcirc; // like R package name
-    impl CircCode;
+    fn all_ambiguous_sequences;
+    fn is_code;
+    fn circular_shift;
+    fn is_code_circular;
+    fn is_code_comma_free;
+    fn is_code_strong_comma_free;
+    fn is_code_cn_circular;
+    fn get_exact_k_circular;
+    use graph;
+
 }
