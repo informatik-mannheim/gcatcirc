@@ -1,6 +1,6 @@
 Package: gcatcirc
 Title: Genetic Code Analysis Toolkit for R - Circular rust_gcatcirc_lib.code package
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     person(given = "Martin",
            family = "Starman",
