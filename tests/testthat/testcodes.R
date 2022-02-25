@@ -22,7 +22,7 @@ test_that("X0 Code", {
 })
 
 test_that("X0 Code alone", {
-  # X0 = c3_code(23) # does not work
-  #expect_equal(X0$id, "X23")
-  expect_equal("X23", "X23") # TODO
+  X0 = c3_code(23) # does not work
+  expect_equal(X0$id, "X23")
+  #expect_equal("X23", "X23") # TODO
 })

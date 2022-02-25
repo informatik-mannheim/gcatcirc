@@ -1,6 +1,6 @@
 #' The i-th C3 code.
-#' 
-#' @param i Integer 0 < i < 217. The number of the C3 code
+#'
+#' @param i Integer 1 <= i <= 216. The number of the C3 code
 #' @return A C3 code
 #' @export
 c3_code = function(i) {
