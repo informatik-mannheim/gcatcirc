@@ -32,7 +32,7 @@ library(gcatcirc)
 
 # C3 codes
 
-`all_c3_codes` is list wiht all $C_3$ codes:
+`all_c3_codes` is list with all $C_3$ codes:
 
 ```{r}
 n = length(all_c3_codes)

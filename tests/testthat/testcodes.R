@@ -18,11 +18,11 @@ context("c3 codes") # Infos
 
 test_that("X0 Code", {
   X0 = all_c3_codes[[23]]
-  expect_equal(X0$id, "X23")
+  expect_equal(get.id(X0), "maximum self-complementary C³ 23")
 })
 
 test_that("X0 Code alone", {
   X0 = c3_code(23) # does not work
-  expect_equal(X0$id, "X23")
+  expect_equal(get.id(X0), "maximum self-complementary C³ 23")
   #expect_equal("X23", "X23") # TODO
 })
