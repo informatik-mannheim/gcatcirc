@@ -1,6 +1,6 @@
 Package: gcatcirc
 Title: Genetic Code Analysis Toolkit for R - Circular rust_gcatcirc_lib.code package
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     person(given = "Martin",
            family = "Starman",
@@ -9,7 +9,7 @@ Authors@R:
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Author: Martin Starman [aut, cre], Markus Gumbel [aut]
 Maintainer: Markus Gumbel <m.gumbel@hs-mannheim.de>
-Depends: R (>= 4.1.0), igraph (>= 1.2), rextendr (>= 0.2)
+Depends: R (>= 4.1.0), igraph (>= 1.2), rextendr (>= 0.2), gcatbase (>= 0.4)
 Imports: igraph (>= 1.2), rextendr (>= 0.2)
 Suggests: testthat
 Description: What the package does (one paragraph).
