@@ -7,7 +7,7 @@
 c3_code(i)
 }
 \arguments{
-\item{i}{Integer 0 < i < 217. The number of the C3 code}
+\item{i}{Integer 1 <= i <= 216. The number of the C3 code}
 }
 \value{
 A C3 code
