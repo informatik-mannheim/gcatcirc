@@ -37,7 +37,7 @@ The package can be installed locally with `devtools::install(quick = T)`.
 # Function outline
 
 <!--outline-start-->
-### [General code tools](#general-circular-codes)
+### [General code tools](#general-code-tools)
 
 [is_code](#is_code)<br>
 [all_ambiguous_sequences](#all_ambiguous_sequences)<br>
@@ -51,15 +51,15 @@ The package can be installed locally with `devtools::install(quick = T)`.
 [is_code_strong_comma_free](#is_code_strong_comma_free)<br>
 [get_exact_k_circular](#get_exact_k_circular)<br>
 
-### [C<sub>3</sub> codes](#general-circular-codes)
+### [C<sup>3</sup> codes](#c3-codes)
 
-[all_c3_codes](#all_c3_codes)<br>
+[c3_codes](#c3_codes)<br>
 [c3_code](#c3_code)<br>
 [c3_equiv_class](#c3_equiv_class)<br>
 [c3_equivmatrix](#c3_equivmatrix)<br>
 [c3_in_class](#c3_in_class)<br>
 
-### [General circular code tools](#general-circular-codes)
+### [General graph tools](#general-graph-codes)
 
 [get_representing_graph](#get_representing_graph)<br>
 [get_component_of_representing_graph](#get_component_of_representing_graph)<br>
@@ -351,24 +351,28 @@ k <- get_exact_k_circular(code)
 ```
 <hr>
 
-## C<sub>3</sub> codes
+## C<sup>3</sup> codes
 
-### all_c3_codes
+### c3_codes
 
 #### Usage
 ```R 
-all_c3_codes
+c3_codes(is = seq_along(all_c3_codes))
 ```
 
 #### Arguments
- \-
+ 
+*is*	a vector of Integer. for all i in is: 1 <= i <= 216.<br>
+
 
 #### Return
- \-
+ 
+A list of C3 codes
+
 
 #### Description
  
-List of all 216 maximal self complementary circular C3 codes.
+Retruns a list of maximal self-complementary C3 codes. Without paramet it returns all C3 codes.
 
 
 #### Examples
@@ -379,12 +383,12 @@ List of all 216 maximal self complementary circular C3 codes.
 
 #### Usage
 ```R 
-c3_code(i)
+c3_code(i = seq_along(all_c3_codes))
 ```
 
 #### Arguments
  
-*i*	Integer 0 < i < 217. The number of the C3 code<br>
+*i*	Integer 1 <= i <= 216. The number of the C3 code<br>
 
 
 #### Return
@@ -477,7 +481,7 @@ All code numbers for given equivalence class
 ```R \-```
 <hr>
 
-## General circular code tools
+## General graph tools
 
 ### get_representing_graph
 

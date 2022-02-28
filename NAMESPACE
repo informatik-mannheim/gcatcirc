@@ -3,6 +3,7 @@
 export(.onLoad)
 export(all_ambiguous_sequences)
 export(c3_code)
+export(c3_codes)
 export(c3_equiv_class)
 export(c3_in_class)
 export(circular_shift)
