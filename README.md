@@ -2,7 +2,7 @@
 ## Genetic Code Analysis Toolkit for R - GCAT Circular package (gcatcirc)
 
 ### _under construction_
-Version 0.1 is only a beta and not ready for use.
+Version 0.2 is only a beta and not ready for use.
 
 This project contains the source code for the R version of the Genetic Code Analysis Toolkit (GCAT) project. Please refer to the [cammbio homepage](https://www.cammbio.hs-mannheim.de/institute.html) for more information.
 
