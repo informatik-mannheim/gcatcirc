@@ -9,7 +9,7 @@ c3_code = function(i) all_c3_codes[[i]]
 
 #' The i-th C3 code.
 #'
-#' Retruns a list of maximal self-complementary C3 codes. Without paramet it returns all C3 codes.
+#' Returns a list of maximal self-complementary C3 codes. Without paramet it returns all C3 codes.
 #'
 #' @param is a vector of Integer. for all i in is: 1 <= i <= 216.
 #' @return A list of C3 codes

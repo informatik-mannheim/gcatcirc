@@ -50,6 +50,7 @@ The package can be installed locally with `devtools::install(quick = T)`.
 [is_code_comma_free](#is_code_comma_free)<br>
 [is_code_strong_comma_free](#is_code_strong_comma_free)<br>
 [get_exact_k_circular](#get_exact_k_circular)<br>
+[get_k_graph_circular](#get_k_graph_circular)<br>
 
 ### [C<sup>3</sup> codes](#c3-codes)
 
@@ -229,10 +230,9 @@ Boolean value. True if the code is Cn circular.
 
 #### Description
  
-That all circular permutations of the code (of all tuples) are circular codes again.
-In total, this function checks all 'n' circular permutations where 'n' is the greatest
-common multiple of all tuple lengths used.
-This is an extended property of circular codes.
+A code is cn circular if all circular permutations of the code (of all tuples) are circular codes again.
+In total, this function checks 'x' circular permutations where 'x' is the least
+common multiple of all tuple lengths used. This is an extended property of circular codes.
 
 
 #### Examples
@@ -351,6 +351,40 @@ k <- get_exact_k_circular(code)
 ```
 <hr>
 
+### get_k_graph_circular
+
+#### Usage
+```R 
+get_k_graph_circular(tuples)
+```
+
+#### Arguments
+ 
+*tuples*	A gcatbase::gcat.code object<br>
+
+
+#### Return
+ 
+Integer value, the k-graph value of the k-graph-circularity. If code is not k-graph circle it returns -1.
+
+
+#### Description
+ 
+K-graph circle codes are a more restrictive than k-circle codes.
+These codes only ensure that all cycles in the representing graph have a common length.
+If the code is circular or the code contains cycles of
+different length the teh function returns -1. <br>
+For mor details see: *https://link.springer.com/article/10.1007/s11538-020-00770-7*
+
+
+#### Examples
+```R 
+code <- gcatbase::code(c("ACG", "CGG", "AC"))
+k <- get_k_graph_circular(code)
+
+```
+<hr>
+
 ## C<sup>3</sup> codes
 
 ### c3_codes
@@ -372,7 +406,7 @@ A list of C3 codes
 
 #### Description
  
-Retruns a list of maximal self-complementary C3 codes. Without paramet it returns all C3 codes.
+Returns a list of maximal self-complementary C3 codes. Without paramet it returns all C3 codes.
 
 
 #### Examples
@@ -383,7 +417,7 @@ Retruns a list of maximal self-complementary C3 codes. Without paramet it return
 
 #### Usage
 ```R 
-c3_code(i = seq_along(all_c3_codes))
+c3_code(i)
 ```
 
 #### Arguments
@@ -398,7 +432,7 @@ A C3 code
 
 #### Description
  
-The i-th C3 code.
+Returns the i-th maximal self-complmentary C3 code. There are exactly 216 such codes.
 
 
 #### Examples

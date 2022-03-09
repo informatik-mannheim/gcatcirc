@@ -10,5 +10,5 @@ crate-type = ['staticlib']
 
 [dependencies]
 extendr-api = '0.2'
-rust_gcatcirc_lib = { version = "0.2.4", git = "https://github.com/informatik-mannheim/rust_gcatcirc_lib.git" }
+rust_gcatcirc_lib = { version = "0.2.6", git = "https://github.com/informatik-mannheim/rust_gcatcirc_lib.git" }
 

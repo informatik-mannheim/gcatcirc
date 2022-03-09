@@ -13,5 +13,5 @@ c3_codes(is = seq_along(all_c3_codes))
 A list of C3 codes
 }
 \description{
-Retruns a list of maximal self-complementary C3 codes. Without paramet it returns all C3 codes.
+Returns a list of maximal self-complementary C3 codes. Without paramet it returns all C3 codes.
 }

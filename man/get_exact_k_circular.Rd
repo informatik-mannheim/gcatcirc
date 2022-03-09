@@ -2,7 +2,7 @@
 % Please edit documentation in R/extendr-wrappers.R
 \name{get_exact_k_circular}
 \alias{get_exact_k_circular}
-\title{This function checks if a code is circular.}
+\title{This function checks if a code is k-circular.}
 \usage{
 get_exact_k_circular(tuples)
 }

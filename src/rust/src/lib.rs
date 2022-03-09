@@ -78,7 +78,7 @@ fn is_code_circular(tuples: Vec<String>) -> bool {
     return code.is_circular();
 }
 
-/// This function checks if a code is circular.
+/// This function checks if a code is k-circular.
 ///
 /// K circle codes are a less restrictive code from the family of circle codes. These codes only ensure that for every
 /// concatenation of less than k tuples from \emph{X} written on a circle, there is only one partition in tuples from \emph{X}.\cr
@@ -95,7 +95,6 @@ fn is_code_circular(tuples: Vec<String>) -> bool {
 /// @seealso \link{is_code_circular}
 ///
 /// @export
-// [[Rcpp::export]]
 #[extendr]
 fn get_exact_k_circular(tuples: Vec<String>) -> u32 {
     let code = new_code_from_vec(tuples);
@@ -104,34 +103,38 @@ fn get_exact_k_circular(tuples: Vec<String>) -> u32 {
 
 /// This function checks if a code is K-Graph circular.
 ///
-/// K-Graph circle codes are a less restrictive code from the family of circle codes. These codes only ensure that for every
-/// concatenation of less than k tuples from \emph{X} written on a circle, there is only one partition in tuples from \emph{X}.\cr
+/// K-graph circle codes are a more restrictive than k-circle codes.
+/// These codes only ensure that all cycles in the representing graph have a common length.
+/// If the code is circular or the code contains cycles of
+/// different length the teh function returns -1. \cr
 /// For mor details see: \link{https://link.springer.com/article/10.1007/s11538-020-00770-7}
 ///
 /// @param tuples A gcatbase::gcat.code object
 ///
-/// @return Integer value, the exact k value of the k-circularity.
+/// @return Integer value, the k-graph value of the k-graph-circularity. If code is not k-graph circle it returns -1.
 ///
 /// @examples
 /// code <- gcatbase::code(c("ACG", "CGG", "AC"))
-/// k <- get_exact_k_graph_circular(code)
+/// k <- get_k_graph_circular(code)
 ///
-/// @seealso \link{is_code_circular}
+/// @seealso \link{get_exact_k_circular}
 ///
 /// @export
-// [[Rcpp::export]]
 #[extendr]
-fn get_exact_k_graph_circular(tuples: Vec<String>) -> u32 {
+fn get_k_graph_circular(tuples: Vec<String>) -> i32 {
     let code = new_code_from_vec(tuples);
-    return code.get_exact_k_circular();
+    if let Some(v) = code.get_k_graph_circular() {
+        return v as i32
+    }
+
+    return -1
 }
 
 /// This function checks if a code is Cn-circular.
 ///
-/// That all circular permutations of the code (of all tuples) are circular codes again.
-/// In total, this function checks all 'n' circular permutations where 'n' is the greatest
-/// common multiple of all tuple lengths used.
-/// This is an extended property of circular codes.
+/// A code is cn circular if all circular permutations of the code (of all tuples) are circular codes again.
+/// In total, this function checks 'x' circular permutations where 'x' is the least
+/// common multiple of all tuple lengths used. This is an extended property of circular codes.
 ///
 /// @param tuples A gcatbase::gcat.code object
 ///
@@ -245,6 +248,7 @@ extendr_module! {
     fn is_code_strong_comma_free;
     fn is_code_cn_circular;
     fn get_exact_k_circular;
+    fn get_k_graph_circular;
     use graph;
 
 }
