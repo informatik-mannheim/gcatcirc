@@ -13,5 +13,5 @@ c3_code(i)
 A C3 code
 }
 \description{
-The i-th C3 code.
+Returns the i-th maximal self-complmentary C3 code. There are exactly 216 such codes.
 }

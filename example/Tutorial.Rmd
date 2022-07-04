@@ -12,7 +12,7 @@ output:
 
 _under construction_
 
-```{r include=params$devel, eval=params$devel}
+```{r include=params$devel, eval=params$devel, echo = F,  message=FALSE}
 devtools::load_all(".")
 ```
 
@@ -20,25 +20,59 @@ devtools::load_all(".")
 library(gcatcirc)
 ```
 
-```{r}
-library(gcatcirc)
-```
-
 # Let's go
 
+Let us start with general code Functions. With the function `is_code(tuples)` you can check whether  a set of tuples is a code. Suppose X is a set of words. This set X is a code if and only if all possible sequences have at most one decomposition into words of X.
+
 ```{r}
-# print(gcatcirc::hellogcatcirc())
+X = gcatbase::code(c("ACG", "CGG", "AC"))
+is_code(X)
+```
+If X is not a code:
+```{r}
+X = gcatbase::code(c("ACG", "CGG", "AC", "GCGG"))
+is_code(X)
+```
+Then the function `all_ambiguous_sequences(tuples)` returns all ambiguous sequences:
+```{r}
+print(all_ambiguous_sequences(X))
+```
+With the function `circular_shift(tuples, sh)` you can circular permutate a code, i.e. let X={123, 332}, then c.shift(2) results in {312, 233}
+
+```{r}
+code <- gcatbase::code(c("ACG", "CGG", "AC"))
+print(circular_shift(code, 2))
+```
+
+# Circular code tools
+
+The function `is_code_circular(tuples)` checks if a code is circular.
+
+```{r}
+code <- gcatbase::code(c("ACG", "CGG", "AC"))
+is_code_circular(code)
+```
+Other properties in the context of circularity can be tested with the following functions. The description of the properties can be looked up in the docs.
+
+```{r}
+code <- gcatbase::code(c("ACG", "CGG", "AC"))
+cat("k-graph: ",  get_k_graph_circular(code), "\n")
+cat("k-circular: ", get_exact_k_circular(code), "\n")
+cat("is: k-circular: ", is_code_cn_circular(code), "\n")
+cat("is: comma free: ", is_code_comma_free(code), "\n")
+cat("is: strong comma free: ", is_code_strong_comma_free(code), "\n")
 ```
 
 # C3 codes
 
-`all_c3_codes` is list with all $C_3$ codes:
+`c3_codes()` Returns a list of maximal self-complementary C3 codes. Without paramet it returns all C3 codes:
 
 ```{r}
-n = length(all_c3_codes)
-print(n)
+n = c3_codes()
+print(length(n))
 ```
 
+There is also a function which allows direct access to each $C_3$-gcatbase::gcat.code:
 
 ```{r}
 X0 = c3_code(23)
@@ -47,7 +81,7 @@ summary(X0)
 ```
 
 ```{r}
-print(amino_acids(X0))
+print(gcatbase::amino_acids(X0))
 ```
 
 Equivalence classes
@@ -67,13 +101,44 @@ print(l)
 Here are the codons:
 
 ```{r}
-cl = lapply(l, function(i) c3_code(i))
+cl = c3_codes(l)
 print(cl)
 ```
 
-How many different amino acids do these rust_gcatcirc_lib.code cover?
+How many amino acids do these codes cover?
 
 ```{r}
 al = sapply(l, function(i) length(unique(amino_acids(c3_code(i)))))
 print(al)
+```
+
+# Graph tools
+
+You can plot a responding graph with the following chunk
+```{r}
+code <- gcatbase::code(c("ACG", "CGG", "AC"))
+G <- get_representing_graph(code, TRUE, TRUE)
+plot(G)
+```
+
+To plot a component simply run;
+
+```{r}
+code <- gcatbase::code(c("ACGG", "CGGC", "AC"))
+G <- get_component_of_representing_graph(code, 2, TRUE, TRUE)
+plot(G)
+```
+
+The function `plot_representing_graph()` and `plot_component_of_representing_graph()` are simple shortcuts to use `igraph::tkplot()`
+
+To get the longest path within a representing graph you can run:
+```{r}
+code <- gcatbase::code(c("ACGG", "CGGC", "AC"))
+get_longest_paths(code)
+```
+The same works for all cyclic paths with:
+
+```{r}
+code <- gcatbase::code(c("ACGG", "GGGC", "GCAC", "GGAC", "AC"))
+get_cyclic_paths(code)
 ```

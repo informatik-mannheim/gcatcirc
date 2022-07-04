@@ -1,9 +1,20 @@
 #' The i-th C3 code.
 #'
+#' Returns the i-th maximal self-complmentary C3 code. There are exactly 216 such codes.
+#'
 #' @param i Integer 1 <= i <= 216. The number of the C3 code
 #' @return A C3 code
 #' @export
-c3_code = function(i) gcatbase::code(all_c3_codes[[i]], id = paste0("X", i))
+c3_code = function(i) all_c3_codes[[i]]
+
+#' The i-th C3 code.
+#'
+#' Returns a list of maximal self-complementary C3 codes. Without paramet it returns all C3 codes.
+#'
+#' @param is a vector of Integer. for all i in is: 1 <= i <= 216.
+#' @return A list of C3 codes
+#' @export
+c3_codes = function(is=seq_along(all_c3_codes)) all_c3_codes[is]
 
 #' Table for mapping of code numbers to equivalence classes.
 #'

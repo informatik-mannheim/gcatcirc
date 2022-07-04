@@ -13,10 +13,9 @@ is_code_cn_circular(tuples)
 Boolean value. True if the code is Cn circular.
 }
 \description{
-That all circular permutations of the code (of all tuples) are circular codes again.
-In total, this function checks all 'n' circular permutations where 'n' is the greatest
-common multiple of all tuple lengths used.
-This is an extended property of circular codes.
+A code is cn circular if all circular permutations of the code (of all tuples) are circular codes again.
+In total, this function checks 'x' circular permutations where 'x' is the least
+common multiple of all tuple lengths used. This is an extended property of circular codes.
 }
 \examples{
 code <- gcatbase::code(c("ACG", "CGG", "AC"))

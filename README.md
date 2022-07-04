@@ -37,7 +37,7 @@ The package can be installed locally with `devtools::install(quick = T)`.
 # Function outline
 
 <!--outline-start-->
-### [General code tools](#general-circular-codes)
+### [General code tools](#general-code-tools)
 
 [is_code](#is_code)<br>
 [all_ambiguous_sequences](#all_ambiguous_sequences)<br>
@@ -50,16 +50,17 @@ The package can be installed locally with `devtools::install(quick = T)`.
 [is_code_comma_free](#is_code_comma_free)<br>
 [is_code_strong_comma_free](#is_code_strong_comma_free)<br>
 [get_exact_k_circular](#get_exact_k_circular)<br>
+[get_k_graph_circular](#get_k_graph_circular)<br>
 
-### [C<sub>3</sub> codes](#general-circular-codes)
+### [C<sup>3</sup> codes](#c3-codes)
 
-[all_c3_codes](#all_c3_codes)<br>
+[c3_codes](#c3_codes)<br>
 [c3_code](#c3_code)<br>
 [c3_equiv_class](#c3_equiv_class)<br>
 [c3_equivmatrix](#c3_equivmatrix)<br>
 [c3_in_class](#c3_in_class)<br>
 
-### [General circular code tools](#general-circular-codes)
+### [General graph tools](#general-graph-codes)
 
 [get_representing_graph](#get_representing_graph)<br>
 [get_component_of_representing_graph](#get_component_of_representing_graph)<br>
@@ -229,10 +230,9 @@ Boolean value. True if the code is Cn circular.
 
 #### Description
  
-That all circular permutations of the code (of all tuples) are circular codes again.
-In total, this function checks all 'n' circular permutations where 'n' is the greatest
-common multiple of all tuple lengths used.
-This is an extended property of circular codes.
+A code is cn circular if all circular permutations of the code (of all tuples) are circular codes again.
+In total, this function checks 'x' circular permutations where 'x' is the least
+common multiple of all tuple lengths used. This is an extended property of circular codes.
 
 
 #### Examples
@@ -351,24 +351,62 @@ k <- get_exact_k_circular(code)
 ```
 <hr>
 
-## C<sub>3</sub> codes
-
-### all_c3_codes
+### get_k_graph_circular
 
 #### Usage
 ```R 
-all_c3_codes
+get_k_graph_circular(tuples)
 ```
 
 #### Arguments
- \-
+ 
+*tuples*	A gcatbase::gcat.code object<br>
+
 
 #### Return
- \-
+ 
+Integer value, the k-graph value of the k-graph-circularity. If code is not k-graph circle it returns -1.
+
 
 #### Description
  
-List of all 216 maximal self complementary circular C3 codes.
+K-graph circle codes are a more restrictive than k-circle codes.
+These codes only ensure that all cycles in the representing graph have a common length.
+If the code is circular or the code contains cycles of
+different length the teh function returns -1. <br>
+For mor details see: *https://link.springer.com/article/10.1007/s11538-020-00770-7*
+
+
+#### Examples
+```R 
+code <- gcatbase::code(c("ACG", "CGG", "AC"))
+k <- get_k_graph_circular(code)
+
+```
+<hr>
+
+## C<sup>3</sup> codes
+
+### c3_codes
+
+#### Usage
+```R 
+c3_codes(is = seq_along(all_c3_codes))
+```
+
+#### Arguments
+ 
+*is*	a vector of Integer. for all i in is: 1 <= i <= 216.<br>
+
+
+#### Return
+ 
+A list of C3 codes
+
+
+#### Description
+ 
+Returns a list of maximal self-complementary C3 codes. Without paramet it returns all C3 codes.
 
 
 #### Examples
@@ -384,7 +422,7 @@ c3_code(i)
 
 #### Arguments
  
-*i*	Integer 0 < i < 217. The number of the C3 code<br>
+*i*	Integer 1 <= i <= 216. The number of the C3 code<br>
 
 
 #### Return
@@ -394,7 +432,7 @@ A C3 code
 
 #### Description
  
-The i-th C3 code.
+Returns the i-th maximal self-complmentary C3 code. There are exactly 216 such codes.
 
 
 #### Examples
@@ -477,7 +515,7 @@ All code numbers for given equivalence class
 ```R \-```
 <hr>
 
-## General circular code tools
+## General graph tools
 
 ### get_representing_graph
 
