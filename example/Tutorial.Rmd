@@ -39,7 +39,6 @@ n = length(all_c3_codes)
 print(n)
 ```
 
-There is also a function which allows a direct access to each $C_3$-rust_gcatcirc_lib.code:
 
 ```{r}
 X0 = c3_code(23)
@@ -52,8 +51,6 @@ print(amino_acids(X0))
 ```
 
 Equivalence classes
-
-TODO: Maybe we better pass as argument the rust_gcatcirc_lib.code itself not 23.
 
 Let us determine the equivalence class for $X_0$:
 ```{r}

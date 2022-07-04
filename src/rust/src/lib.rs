@@ -208,7 +208,6 @@ fn is_code_strong_comma_free(tuples: Vec<String>) -> bool {
     return code.is_strong_comma_free();
 }
 
-
 /// Shifts each tuple by `sh` positions
 ///
 /// Under the concept shift is understood a circular permutation, i.e.
@@ -230,8 +229,6 @@ fn circular_shift(tuples: Vec<String>, sh: i32) -> Vec<String> {
     return code.get_code()
 }
 
-
-
 // Macro to generate exports.
 // This ensures exported functions are registered with R.
 // See corresponding C rust_gcatcirc_lib.code in `entrypoint.c`.
@@ -246,5 +243,4 @@ extendr_module! {
     fn is_code_cn_circular;
     fn get_exact_k_circular;
     use graph;
-
 }
