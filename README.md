@@ -1,21 +1,14 @@
-# gcatcirc
-## Genetic Code Analysis Toolkit for R - GCAT Circular package (gcatcirc)
+# Genetic Code Analysis Toolkit for R - GCAT Circular package (gcatcirc)
 
-### _under construction_
-Version 0.2 is only a beta and not ready for use.
+Warning: version 0.2.x is only a beta and not ready for public use.
 
-This project contains the source code for the R version of the Genetic Code Analysis Toolkit (GCAT) project. Please refer to the [cammbio homepage](https://www.cammbio.hs-mannheim.de/institute.html) for more information.
+This project contains the source code for the R version of the Genetic Code Analysis Toolkit (GCAT) project for circular codes. Please refer also to the [cammbio homepage](https://www.cammbio.hs-mannheim.de/institute.html) for more information.
 
-![Genetic Code Analysis Toolkit Logo](/man/resources/bio/gcat/logo.png?raw=true)
-
-See `./example/Tutorial.Rmd` for an introduction.
+![Genetic Code Analysis Toolkit Logo](./man/resources/bio/gcat/logo.png?raw=true)
 
 ## Installation
-
-# Installation
-gcatcirc is available for R version 4.1 and higher. It requires a [rust](https://www.rust-lang.org/) 1.57 (or later) compiler installed on your machine.
-Furthermore the current version of devtools has to be installed on your computer. If you are using Microsoft Windows, 
-then you need to install [Rtools](https://cran.r-project.org/bin/windows/Rtools/)
+`gcatcirc` is available for R version 4.1 and higher. It requires a [Rust](https://www.rust-lang.org/) 1.57 (or later) compiler installed on your machine. Furthermore the current version of devtools has to be installed on your computer. If you are using Microsoft Windows, 
+then you need to install [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
 
 A common error is that rust does not have the target installed.
 
@@ -29,12 +22,12 @@ install.packages("devtools")
 devtools::install_github("/informatik-mannheim/gcatcirc")
 ```
 
-## Development
+## Usage
 
-`devtools::build(binary = TRUE)` creates a local package with binaries (*.dll).
-The package can be installed locally with `devtools::install(quick = T)`. 
+Once you installed `gcatcirc`, you may read its help pages. The file [./example/Tutorial.Rmd](./example/Tutorial.Rmd) is a good start for an introduction and a tutorial. This markdown document can be executed. The executed tutorial is available [online](https://oc.informatik.hs-mannheim.de/s/FrXnTHNw3gPZJTK/download).
 
-# Function outline
+
+## Function outline
 
 <!--outline-start-->
 ### [General code tools](#general-code-tools)
@@ -785,4 +778,5 @@ lp <- get_longest_paths(code)
 
 
 # Copyright and license
-Code and documentation copyright 2018-2019 Mannheim University of Applied Sciences. Code released under the GPL License, Version 2.0.
+
+Code and documentation copyright 2018-2022 Mannheim University of Applied Sciences. Code released under the Apache License, Version 2.0.

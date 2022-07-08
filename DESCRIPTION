@@ -1,6 +1,6 @@
 Package: gcatcirc
 Title: Genetic Code Analysis Toolkit for R - GCAT Circular package (gcatcirc)
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: 
     person(given = "Martin",
            family = "Starman",
@@ -12,7 +12,7 @@ Maintainer: Markus Gumbel <m.gumbel@hs-mannheim.de>
 Depends: R (>= 4.1.0), igraph (>= 1.2), rextendr (>= 0.2), gcatbase (>= 0.5)
 Imports: igraph (>= 1.2), rextendr (>= 0.2), gcatbase (>= 0.5)
 Suggests: testthat
-Description: What the package does (one paragraph).
+Description: This package provides functions and data for the analyis of circular codes in the context of protein synthesis.
 License: Apache License, Version 2.0
 Encoding: UTF-8
 LazyData: true
