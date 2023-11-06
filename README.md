@@ -19,9 +19,11 @@ rustup target add [YOUR_TARGET]
 Starting a new R console and run:
 ```R
 install.packages("devtools")
-devtools::install_github("/informatik-mannheim/gcatcirc")
+devtools::install_github("informatik-mannheim/gcatcirc")
 
 ```
+
+### Windows- Step by Step 
 
 -Download & Install:
  1) R: https://cran.r-project.org/bin/windows/base/R-4.3.2-win.exe
@@ -31,10 +33,14 @@ devtools::install_github("/informatik-mannheim/gcatcirc")
 
 -Reboot
 
+-Open Command Prompt
+ 1) rustup  target add x86_64-pc-windows-gnu
+
 -Open RStudio
 
  1) install.packages("devtools")
- 2) devtools::install_github("/informatik-mannheim/gcatcirc")
+ 2) devtools::install_github("informatik-mannheim/gcatbase")
+ 3) devtools::install_github("informatik-mannheim/gcatcirc")
 
 -Done
 
