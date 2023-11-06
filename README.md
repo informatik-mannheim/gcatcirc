@@ -20,7 +20,23 @@ Starting a new R console and run:
 ```R
 install.packages("devtools")
 devtools::install_github("/informatik-mannheim/gcatcirc")
+
 ```
+
+-Download & Install:
+ 1) R: https://cran.r-project.org/bin/windows/base/R-4.3.2-win.exe
+ 2) RStudio: https://download1.rstudio.org/electron/windows/RStudio-2023.09.1-494.exe
+ 3) Rust: https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe
+ 4) RTools: https://cran.r-project.org/bin/windows/Rtools/rtools43/files/rtools43-5863-5818.exe
+
+-Reboot
+
+-Open RStudio
+
+ 1) install.packages("devtools")
+ 2) devtools::install_github("/informatik-mannheim/gcatcirc")
+
+-Done
 
 ## Usage
 
