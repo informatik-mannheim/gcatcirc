@@ -9,8 +9,8 @@ Authors@R:
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Author: Martin Starman [aut, cre], Markus Gumbel [aut]
 Maintainer: Markus Gumbel <m.gumbel@hs-mannheim.de>
-Depends: R (>= 4.1.0), igraph (>= 1.2), rextendr (>= 0.2), gcatbase (>= 0.5)
-Imports: igraph (>= 1.2), rextendr (>= 0.2), gcatbase (>= 0.5)
+Depends: R (>= 4.1.0), igraph (>= 1.2), rextendr (>= 0.3.1), gcatbase (>= 0.5)
+Imports: igraph (>= 1.2), rextendr (>= 0.3.1), gcatbase (>= 0.5)
 Suggests: testthat
 Description: This package provides functions and data for the analyis of circular codes in the context of protein synthesis.
 License: Apache License, Version 2.0

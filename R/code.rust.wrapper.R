@@ -1,4 +1,4 @@
-igraph_factory <- function(vertices_edges_list) {
+igraph_factory <- function(vertices_edges_list, in.code) {
   g <- igraph::make_empty_graph();
   vertices_vec <- vertices_edges_list$vertices
   edges_vec <- vertices_edges_list$edges
@@ -13,8 +13,38 @@ igraph_factory <- function(vertices_edges_list) {
       g <- g + igraph::edges(vertices_edges_list$longest_path_edges, color = "green")
     }
 
+    return(add.code.coloring(g, in.code))
+  }
+}
+
+add.code.coloring <- function(g, in.code) {
+
+  v.coloring <- function(v, code) {
+    for (word in code) {
+      if (v == word) {
+        return(T)
+      }
+      if (stringr::str_starts(v, word)) {
+        new.v <- substring(v, nchar(word) + 1)
+        return(v.coloring(new.v, code))
+      }
+    }
+
+    return(F)
+  }
+
+  coloring <- function(g, code) {
+    is.colored <- c()
+    for (v in  names(igraph::V(g))) {
+      is.colored <- c(is.colored, v.coloring(v, code))
+    }
+
+    igraph::V(g)$color <- ifelse(is.colored, "red", "white")
+
     return(g)
   }
+
+  coloring(g, in.code)
 }
 
 
@@ -49,7 +79,7 @@ igraph_factory <- function(vertices_edges_list) {
 #' @export
 get_representing_graph <- function(code, show_cycles = F, show_longest_path = F) {
   g.obj <- get_representing_graph_obj(code, show_cycles = show_cycles, show_longest_path = show_longest_path)
-  return(igraph_factory(g.obj))
+  return(igraph_factory(g.obj, code))
 }
 
 
@@ -83,7 +113,7 @@ get_representing_graph <- function(code, show_cycles = F, show_longest_path = F)
 #' @export
 plot_representing_graph <- function(code, show_cycles = F, show_longest_path = F) {
   g.obj <- get_representing_graph_obj(code, show_cycles = show_cycles, show_longest_path = show_longest_path)
-  G <- igraph_factory(g.obj)
+  G <- igraph_factory(g.obj, code)
   igraph::tkplot(G)
 }
 
@@ -119,7 +149,7 @@ plot_representing_graph <- function(code, show_cycles = F, show_longest_path = F
 #' @export
 get_component_of_representing_graph <- function(code, i, show_cycles = F, show_longest_path = F) {
   g.obj <- get_representing_component_obj(code, i, show_cycles = show_cycles, show_longest_path = show_longest_path)
-  return(igraph_factory(g.obj))
+  return(igraph_factory(g.obj, code))
 }
 
 
@@ -154,6 +184,6 @@ get_component_of_representing_graph <- function(code, i, show_cycles = F, show_l
 #' @export
 plot_component_of_representing_graph <- function(code, i, show_cycles = F, show_longest_path = F) {
   g.obj <- get_representing_component_obj(code, i, show_cycles = show_cycles, show_longest_path = show_longest_path)
-  G <- igraph_factory(g.obj)
+  G <- igraph_factory(g.obj, code)
   igraph::tkplot(G)
 }
